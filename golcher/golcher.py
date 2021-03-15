@@ -179,10 +179,11 @@ def show_history(s, show=True, showImmidiaely=False, title=""):
 
 def show_repetition_parameter(text, title="", show=False):
     history = show_history(text, show=False)
-    plt.title(title)
-    v = [history[w] / w for w in range(1, len(history))]
-    plt.plot([history[w] / w for w in range(1, len(history))])
-    plt.show()
+    if show:
+        plt.title(title)
+        v = [history[w] / w for w in range(1, len(history))]
+        plt.plot([history[w] / w for w in range(1, len(history))])
+        plt.show()
     return v
 
 import argparse
