@@ -2,13 +2,13 @@ from distutils.core import setup
 setup(
   name = 'golcher',
   packages = ['golcher'],
-  version = '0.6',
+  version = '0.66',
   license='MIT',
   description = 'Find Golcher Constant for a text Based on http://amor.cms.hu-berlin.de/~golchefe/ranlp.pdf and an Suffix Tree implementation',
   author = 'Liubomyr Ivanitskyi',
   author_email = 'lubomyr.ivanitskiy@gmail.com',
   url = 'https://github.com/LubomyrIvanitskiy',
-  download_url = 'https://github.com/LubomyrIvanitskiy/golcher/archive/0.5.tar.gz',
+  download_url = 'https://github.com/LubomyrIvanitskiy/golcher/archive/0.6.tar.gz',
   keywords = ['Golcher', 'NLP', 'constant', "suffix tree", "text repetition"],
   install_requires=[
           'numpy',
