@@ -178,11 +178,13 @@ def show_history(s, show=True, showImmidiaely=False, title=""):
 
 
 def show_repetition_parameter(text, title="", show=False):
+    text = text+"$"
     history = show_history(text, show=False)
+    v = None
     if show:
         plt.title(title)
-        v = [history[w] / w for w in range(1, len(history))]
-        plt.plot([history[w] / w for w in range(1, len(history))])
+        v = [history[w] / (w+1) for w in range(0, len(history)-1)]
+        plt.plot([history[w] / (w+1) for w in range(0, len(history)-1)])
         plt.show()
     return v
 
