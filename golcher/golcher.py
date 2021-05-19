@@ -164,7 +164,15 @@ class SuffixTree:
         for sub in self.walk_dfs(self.root):
             print(sub)
 
+
 import matplotlib.pyplot as plt
+
+
+def get_suffix_tree(s):
+    st = SuffixTree(s)
+    st.build_suffix_tree()
+    return st
+
 
 def show_history(s, show=True, showImmidiaely=False, title=""):
     st = SuffixTree(s)
@@ -178,14 +186,15 @@ def show_history(s, show=True, showImmidiaely=False, title=""):
 
 
 def show_repetition_parameter(text, title="", show=False):
-    text = text+"$"
+    text = text + "$"
     history = show_history(text, show=False)
     v = [history[w] / (w + 1) for w in range(0, len(history) - 1)]
     if show:
         plt.title(title)
-        plt.plot([history[w] / (w+1) for w in range(0, len(history)-1)])
+        plt.plot([history[w] / (w + 1) for w in range(0, len(history) - 1)])
         plt.show()
     return v
+
 
 import argparse
 import numpy as np
@@ -208,4 +217,3 @@ if __name__ == "__main__":
         history = show_repetition_parameter(text, show=args.show)
         if args.out is not None:
             np.savetxt(args.out, history, delimiter=",")
-
