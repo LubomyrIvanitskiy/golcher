@@ -36,16 +36,6 @@ class Node:
         return super(Node, self).__getattribute__(name)
 
 
-class Occupation:
-    def __init__(self):
-        self.total = 0
-        self.counter = 0
-
-    def increment(self, inc):
-        self.total += inc
-        self.counter += 1
-
-
 class SuffixTree:
     def __init__(self, data):
         self._string = data
@@ -65,7 +55,7 @@ class SuffixTree:
 
     def walk_down(self, current_node):
         length = self.edge_length(current_node)
-        if (self.activeLength >= length):
+        if self.activeLength >= length:
             self.activeEdge += length
             self.activeLength -= length
             self.activeNode = current_node
@@ -87,20 +77,20 @@ class SuffixTree:
         leafEnd = pos
         self.remainingSuffixCount += 1
         self.lastNewNode = None
-        while (self.remainingSuffixCount > 0):
-            if (self.activeLength == 0):
+        while self.remainingSuffixCount > 0:
+            if self.activeLength == 0:
                 self.activeEdge = pos
-            if (self.activeNode.children.get(self._string[self.activeEdge]) is None):
+            if self.activeNode.children.get(self._string[self.activeEdge]) is None:
                 self.activeNode.children[self._string[self.activeEdge]] = self.new_node(pos, leaf=True)
-                if (self.lastNewNode is not None):
+                if self.lastNewNode is not None:
                     self.lastNewNode.suffixLink = self.activeNode
                     self.lastNewNode = None
             else:
                 _next = self.activeNode.children.get(self._string[self.activeEdge])
                 if self.walk_down(_next):
                     continue
-                if (self._string[_next.start + self.activeLength] == self._string[pos]):
-                    if ((self.lastNewNode is not None) and (self.activeNode != self.root)):
+                if self._string[_next.start + self.activeLength] == self._string[pos]:
+                    if (self.lastNewNode is not None) and (self.activeNode != self.root):
                         self.lastNewNode.suffixLink = self.activeNode
                         self.lastNewNode = None
                     self.activeLength += 1
@@ -111,14 +101,14 @@ class SuffixTree:
                 split.children[self._string[pos]] = self.new_node(pos, leaf=True)
                 _next.start += self.activeLength
                 split.children[self._string[_next.start]] = _next
-                if (self.lastNewNode is not None):
+                if self.lastNewNode is not None:
                     self.lastNewNode.suffixLink = split
                 self.lastNewNode = split
             self.remainingSuffixCount -= 1
-            if ((self.activeNode == self.root) and (self.activeLength > 0)):  # APCFER2C1
+            if (self.activeNode == self.root) and (self.activeLength > 0):  # APCFER2C1
                 self.activeLength -= 1
                 self.activeEdge = pos - self.remainingSuffixCount + 1
-            elif (self.activeNode != self.root):  # APCFER2C2
+            elif self.activeNode != self.root:  # APCFER2C2
                 self.activeNode = self.activeNode.suffixLink
 
     def walk_dfs(self, current):
@@ -128,23 +118,6 @@ class SuffixTree:
         for node in current.children.values():
             if node:
                 yield from self.walk_dfs(node)
-
-    def _count_active_windows(self, current, window, occupation):
-        start, end = current.start, current.end
-        if current.start >= 0:
-            sorted_child_indexes = sorted(map(lambda node: node.start, current.children.values()))
-            n = len(self._string)
-            ocuppy = count_more_than_2_by_indexes(sorted_child_indexes, window, n) / (n - window + 1)
-            occupation.increment(ocuppy)
-        for node in current.children.values():
-            if node and not node.leaf and node.start >= 0:
-                self._count_active_windows(node, window, occupation)
-
-    def count_active_windows(self, window):
-        occupy = Occupation()
-        self._count_active_windows(self.root, window, occupy)
-        log(f"Occupy increased {occupy.counter} times")
-        return occupy.total / occupy.counter
 
     def build_suffix_tree(self):
         self.size = len(self._string)
@@ -158,7 +131,7 @@ class SuffixTree:
         return internal_nodes_history
 
     def __str__(self):
-        return "\n".join(map(str, self.edges.values()))
+        return f"Suffix tree: max_depth = {self.size}, internal_nodes: {self.internalNodes}"
 
     def print_dfs(self):
         for sub in self.walk_dfs(self.root):
